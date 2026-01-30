@@ -5,7 +5,7 @@ import kr.rtustudio.nicknames.command.MainCommand;
 import kr.rtustudio.nicknames.configuration.NameConfig;
 import kr.rtustudio.nicknames.dependency.NamePlaceholder;
 import kr.rtustudio.nicknames.listeners.PlayerJoinQuit;
-import kr.rtustudio.nicknames.manager.NickNamesManager;
+import kr.rtustudio.nicknames.manager.NameManager;
 import kr.rtustudio.nicknames.player.PlayerNameManager;
 import kr.rtustudio.nicknames.provider.NameProvider;
 import lombok.Getter;
@@ -17,13 +17,11 @@ public class NickNames extends RSPlugin {
     private static NickNames instance;
 
     @Getter
-    private NickNamesManager nickNamesManager;
+    private NameManager nameManager;
     @Getter
     private PlayerNameManager playerNameManager;
     @Getter
     private NameProvider nameProvider;
-
-    private NamePlaceholder placeholder;
 
     @Override
     public void load() {
@@ -36,7 +34,7 @@ public class NickNames extends RSPlugin {
 
         registerConfiguration(NameConfig.class, "Name");
 
-        nickNamesManager = new NickNamesManager(this);
+        nameManager = new NameManager(this);
         playerNameManager = new PlayerNameManager(this);
 
         nameProvider = new NameProvider(this);

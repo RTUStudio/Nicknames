@@ -5,7 +5,6 @@ import kr.rtustudio.nicknames.NickNames;
 import kr.rtustudio.nicknames.player.PlayerNameManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 @SuppressWarnings("unused")
 public class PlayerJoinQuit extends RSListener<NickNames> {
@@ -20,11 +19,6 @@ public class PlayerJoinQuit extends RSListener<NickNames> {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         pnm.addPlayer(e.getPlayer());
-    }
-
-    @EventHandler
-    public void onQuit(PlayerQuitEvent e) {
-        pnm.removePlayer(e.getPlayer());
     }
 
 }

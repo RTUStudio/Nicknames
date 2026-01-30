@@ -5,7 +5,7 @@ import kr.rtustudio.framework.bukkit.api.format.ComponentFormatter;
 import kr.rtustudio.framework.bukkit.api.player.PlayerChat;
 import kr.rtustudio.nicknames.NickNames;
 import kr.rtustudio.nicknames.configuration.NameConfig;
-import kr.rtustudio.nicknames.manager.NickNamesManager;
+import kr.rtustudio.nicknames.manager.NameManager;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.command.CommandSender;
@@ -18,7 +18,7 @@ public class PlayerName {
     private final NickNames plugin;
 
     private final PlayerChat chat;
-    private final NickNamesManager nnm;
+    private final NameManager nnm;
     private final NameConfig nameConfig;
 
     private final Player player;
@@ -27,7 +27,7 @@ public class PlayerName {
 
     public PlayerName(NickNames plugin, Player player) {
         this.plugin = plugin;
-        this.nnm = plugin.getNickNamesManager();
+        this.nnm = plugin.getNameManager();
         this.message = plugin.getConfiguration().getMessage();
         this.chat = PlayerChat.of(plugin);
         this.nameConfig = plugin.getConfiguration(NameConfig.class);
