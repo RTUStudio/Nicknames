@@ -1,5 +1,0 @@
-nickname:
-  name: "닉네임"
-  commands:
-    change:
-      name: "변경"

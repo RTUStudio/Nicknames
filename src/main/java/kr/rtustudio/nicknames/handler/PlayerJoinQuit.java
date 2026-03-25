@@ -1,4 +1,4 @@
-package kr.rtustudio.nicknames.listeners;
+package kr.rtustudio.nicknames.handler;
 
 import kr.rtustudio.framework.bukkit.api.listener.RSListener;
 import kr.rtustudio.nicknames.NickNames;

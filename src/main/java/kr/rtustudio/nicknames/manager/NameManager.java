@@ -1,11 +1,14 @@
 package kr.rtustudio.nicknames.manager;
+import java.util.Map;
+
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import kr.rtustudio.framework.bukkit.api.platform.JSON;
-import kr.rtustudio.framework.bukkit.api.storage.Storage;
+import kr.rtustudio.storage.JSON;
 import kr.rtustudio.nicknames.NickNames;
 import kr.rtustudio.nicknames.data.Nickname;
+import kr.rtustudio.storage.Storage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -17,12 +20,12 @@ public class NameManager {
 
     private final NickNames plugin;
 
-    private final HashMap<UUID, Nickname> cache = new HashMap<>();
+    private final Map<UUID, Nickname> cache = new Object2ObjectOpenHashMap<>();
 
     public NameManager(NickNames plugin) {
         this.plugin = plugin;
-        Storage storage = plugin.getStorage();
-        storage.get("Nickname", JSON.of()).thenAccept(result -> {
+        Storage storage = plugin.getStorage("Nickname");
+        storage.get(JSON.of().get()).thenAccept(result -> {
             for (JsonObject object : result) {
                 String uuid = object.get("uuid").getAsString();
                 String name = object.get("name").getAsString();
@@ -36,12 +39,14 @@ public class NameManager {
     }
 
     public void setName(UUID uuid, String name) {
-        Storage storage = plugin.getStorage();
-        storage.get("Nickname", JSON.of("uuid", uuid.toString())).thenAccept(result -> {
+        Storage storage = plugin.getStorage("Nickname");
+        storage.get(JSON.of("uuid", uuid.toString()).get()).thenAccept(result -> {
             cache.put(uuid, new Nickname(uuid, name));
             if (result == null || result.isEmpty()) {
-                storage.add("Nickname", JSON.of("uuid", uuid.toString()).append("name", name));
-            } else storage.set("Nickname", JSON.of("uuid", uuid.toString()), JSON.of("name", name));
+                storage.add(JSON.of("uuid", uuid.toString()).append("name", name).get());
+            } else {
+                storage.set(JSON.of("uuid", uuid.toString()).get(), JSON.of("name", name).get());
+            }
         });
     }
 
@@ -54,8 +59,8 @@ public class NameManager {
     @Nullable
     public Nickname getNickname(UUID uuid) {
         if (cache.containsKey(uuid)) return cache.get(uuid);
-        Storage storage = plugin.getStorage();
-        CompletableFuture<List<JsonObject>> result = storage.get("Nickname", JSON.of("uuid", uuid.toString()));
+        Storage storage = plugin.getStorage("Nickname");
+        CompletableFuture<List<JsonObject>> result = storage.get(JSON.of("uuid", uuid.toString()).get());
         if (result == null) return null;
         List<JsonObject> list = result.join();
         if (list == null || list.isEmpty()) return null;
@@ -69,5 +74,4 @@ public class NameManager {
     public List<String> getNamesFromDB() {
         return cache.values().stream().map(Nickname::name).toList();
     }
-
 }

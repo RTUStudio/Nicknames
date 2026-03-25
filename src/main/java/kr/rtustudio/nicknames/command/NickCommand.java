@@ -1,7 +1,7 @@
 package kr.rtustudio.nicknames.command;
 
+import kr.rtustudio.framework.bukkit.api.command.CommandArgs;
 import kr.rtustudio.framework.bukkit.api.command.RSCommand;
-import kr.rtustudio.framework.bukkit.api.command.RSCommandData;
 import kr.rtustudio.nicknames.NickNames;
 import kr.rtustudio.nicknames.player.PlayerName;
 import kr.rtustudio.nicknames.player.PlayerNameManager;
@@ -20,33 +20,31 @@ public class NickCommand extends RSCommand<NickNames> {
     }
 
     @Override
-    public Result execute(RSCommandData data) {
+    protected Result execute(CommandArgs data) {
         if (data.length(2)) {
             if (player() == null) return Result.ONLY_PLAYER;
 
-            if (hasPermission(getPlugin().getName() + ".nickname.change")) {
+            if (hasPermission("nickname.change")) {
                 PlayerName playerName = playerNameManager.getPlayer(player().getUniqueId());
-                playerName.changeName(player(), data.args(1));
+                playerName.changeName(player(), data.get(1));
                 return Result.SUCCESS;
             }
-
-        } else if (data.length(3) && hasPermission(getPlugin().getName() + ".nickname.change.other")) {
-            UUID targetUuid = provider().getUniqueId(data.args(2));
+        } else if (data.length(3) && hasPermission("nickname.change.other")) {
+            UUID targetUuid = provider().getUniqueId(data.get(2));
             if (targetUuid == null) return Result.NOT_FOUND_ONLINE_PLAYER;
-            Player target = getPlugin().getServer().getPlayer(targetUuid);
+            Player target = plugin.getServer().getPlayer(targetUuid);
             PlayerName playerName = playerNameManager.getPlayer(targetUuid);
-            playerName.changeName(player(), target, data.args(1));
+            playerName.changeName(player(), target, data.get(1));
             return Result.SUCCESS;
         }
         return Result.FAILURE;
     }
 
     @Override
-    public List<String> tabComplete(RSCommandData data) {
-        if (data.length(3) && hasPermission(getPlugin().getName() + ".nickname.change.other")) {
+    protected List<String> tabComplete(CommandArgs data) {
+        if (data.length(3) && hasPermission("nickname.change.other")) {
             return provider().names();
         }
         return List.of();
     }
-
 }

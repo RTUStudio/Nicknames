@@ -1,0 +1,9 @@
+nickname:
+  name: "닉네임"
+  description: "닉네임 관리 명령어입니다."
+  usage: "/닉네임"
+  commands:
+    change:
+      name: "변경"
+      description: "닉네임을 변경합니다."
+      usage: "/닉네임 변경 <닉네임>"

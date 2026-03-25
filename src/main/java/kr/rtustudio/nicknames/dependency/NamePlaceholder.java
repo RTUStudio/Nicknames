@@ -1,5 +1,6 @@
-package kr.rtustudio.nicknames.dependency;
+package kr.rtustudio.nicknames.integration;
 
+import kr.rtustudio.framework.bukkit.api.integration.wrapper.PlaceholderArgs;
 import kr.rtustudio.framework.bukkit.api.integration.wrapper.PlaceholderWrapper;
 import kr.rtustudio.nicknames.NickNames;
 import kr.rtustudio.nicknames.player.PlayerName;
@@ -17,22 +18,23 @@ public class NamePlaceholder extends PlaceholderWrapper<NickNames> {
     }
 
     @Override
-    public String onRequest(OfflinePlayer offlinePlayer, String[] params) {
-        switch (params[0]) {
-            case "display" -> {
-                PlayerName pn = pnm.getPlayer(offlinePlayer.getUniqueId());
-                if (pn != null) {
-                    String name = pn.getName();
-                    if (name != null && !name.isEmpty()) return name;
-                }
-                if (offlinePlayer.isOnline()) {
-                    Player player = offlinePlayer.getPlayer();
-                    if (player.getDisplayName().isEmpty()) return player.getName();
-                    return player.getDisplayName();
-                } else return offlinePlayer.getName();
-            }
-        }
-        return pnm.getPlayer(offlinePlayer.getUniqueId()).getName();
-    }
+    public String onRequest(OfflinePlayer offlinePlayer, PlaceholderArgs args) {
+        if (args.isEmpty()) return null;
 
+        if (args.equals(0, "display")) {
+            PlayerName pn = pnm.getPlayer(offlinePlayer.getUniqueId());
+            if (pn != null) {
+                String name = pn.getName();
+                if (name != null && !name.isEmpty()) return name;
+            }
+            if (offlinePlayer instanceof Player player) {
+                if (player.getDisplayName().isEmpty()) return player.getName();
+                return player.getDisplayName();
+            }
+            return offlinePlayer.getName();
+        }
+
+        PlayerName pn = pnm.getPlayer(offlinePlayer.getUniqueId());
+        return pn == null ? null : pn.getName();
+    }
 }

@@ -1,5 +1,8 @@
 package kr.rtustudio.nicknames.player;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+
 import kr.rtustudio.nicknames.NickNames;
 import lombok.extern.java.Log;
 import org.bukkit.entity.Player;
@@ -11,14 +14,14 @@ public class PlayerNameManager {
 
     private final NickNames plugin;
 
-    private final Map<UUID, PlayerName> map = new HashMap<>();
+    private final Map<UUID, PlayerName> map = new Object2ObjectOpenHashMap<>();
 
     public PlayerNameManager(NickNames plugin) {
         this.plugin = plugin;
     }
 
     public List<PlayerName> getPlayers() {
-        return new ArrayList<>(map.values());
+        return new ObjectArrayList<>(map.values());
     }
 
     public boolean contains(UUID uuid) {
