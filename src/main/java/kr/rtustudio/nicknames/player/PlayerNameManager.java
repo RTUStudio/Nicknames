@@ -1,13 +1,14 @@
 package kr.rtustudio.nicknames.player;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import kr.rtustudio.nicknames.NickNames;
 import lombok.extern.java.Log;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Log
 public class PlayerNameManager {
@@ -38,7 +39,6 @@ public class PlayerNameManager {
     }
 
     public PlayerName getPlayer(UUID uuid) {
-        if (!map.containsKey(uuid)) return null;
         return map.get(uuid);
     }
 

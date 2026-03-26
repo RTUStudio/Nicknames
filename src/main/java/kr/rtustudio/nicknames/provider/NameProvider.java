@@ -1,8 +1,8 @@
 package kr.rtustudio.nicknames.provider;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-
 import kr.rtustudio.nicknames.NickNames;
+import kr.rtustudio.nicknames.manager.NameManager;
 import kr.rtustudio.nicknames.player.PlayerName;
 import kr.rtustudio.nicknames.player.PlayerNameManager;
 import lombok.Getter;
@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,10 +18,12 @@ public class NameProvider implements kr.rtustudio.framework.bukkit.api.core.prov
 
     private final NickNames plugin;
     private final PlayerNameManager pnm;
+    private final NameManager nameManager;
 
     public NameProvider(NickNames plugin) {
         this.plugin = plugin;
         this.pnm = plugin.getPlayerNameManager();
+        this.nameManager = plugin.getNameManager();
     }
 
     @Override
@@ -46,7 +47,11 @@ public class NameProvider implements kr.rtustudio.framework.bukkit.api.core.prov
 
     public String getName(UUID uniqueId) {
         PlayerName pn = pnm.getPlayer(uniqueId);
-        return pn == null ? null : pn.getName();
+        if (pn != null) {
+            String name = pn.getName();
+            if (name != null && !name.isEmpty()) return name;
+        }
+        return nameManager.getName(uniqueId);
     }
 
     public UUID getUniqueId(String name) {

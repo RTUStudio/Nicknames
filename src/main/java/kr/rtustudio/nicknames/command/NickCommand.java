@@ -23,13 +23,14 @@ public class NickCommand extends RSCommand<NickNames> {
     protected Result execute(CommandArgs data) {
         if (data.length(2)) {
             if (player() == null) return Result.ONLY_PLAYER;
+            if (!hasPermission("nickname.change")) return Result.FAILURE;
 
-            if (hasPermission("nickname.change")) {
-                PlayerName playerName = playerNameManager.getPlayer(player().getUniqueId());
-                playerName.changeName(player(), data.get(1));
-                return Result.SUCCESS;
-            }
-        } else if (data.length(3) && hasPermission("nickname.change.other")) {
+            PlayerName playerName = playerNameManager.getPlayer(player().getUniqueId());
+            playerName.changeName(player(), data.get(1));
+            return Result.SUCCESS;
+        }
+
+        if (data.length(3) && hasPermission("nickname.change.other")) {
             UUID targetUuid = provider().getUniqueId(data.get(2));
             if (targetUuid == null) return Result.NOT_FOUND_ONLINE_PLAYER;
             Player target = plugin.getServer().getPlayer(targetUuid);
@@ -37,6 +38,7 @@ public class NickCommand extends RSCommand<NickNames> {
             playerName.changeName(player(), target, data.get(1));
             return Result.SUCCESS;
         }
+
         return Result.FAILURE;
     }
 

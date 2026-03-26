@@ -6,21 +6,20 @@ import kr.rtustudio.nicknames.NickNames;
 import kr.rtustudio.nicknames.configuration.NameConfig;
 import kr.rtustudio.nicknames.manager.NameManager;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @Getter
 public class PlayerName {
 
-    private NickNames plugin;
+    private final NickNames plugin;
 
-    private Notifier notifier;
-    private NameManager nnm;
-    private NameConfig nameConfig;
+    private final Notifier notifier;
+    private final NameManager nnm;
+    private final NameConfig nameConfig;
 
-    private Player player;
-    private MessageTranslation message;
+    private final Player player;
+    private final MessageTranslation message;
     private String name;
 
     public PlayerName(NickNames plugin, Player player) {
@@ -39,14 +38,6 @@ public class PlayerName {
         this.name = name;
         player.setDisplayName(name);
         nnm.setName(player.getUniqueId(), name);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Player getPlayer() {
-        return player;
     }
 
     public void changeName(Player player, String name) {
