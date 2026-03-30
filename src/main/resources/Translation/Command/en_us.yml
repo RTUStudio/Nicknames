@@ -1,0 +1,4 @@
+nicknames:
+  name: "NickNames"
+  description: "NickNames management command."
+  usage: "/nicknames"

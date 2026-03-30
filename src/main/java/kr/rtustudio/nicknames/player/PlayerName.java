@@ -30,7 +30,7 @@ public class PlayerName {
         this.nameConfig = plugin.getConfiguration(NameConfig.class);
         this.player = player;
         this.name = nnm.getName(player.getUniqueId());
-        if (name != null && name.isEmpty()) return;
+        if (this.name == null || this.name.isEmpty()) return;
         this.player.setDisplayName(this.name);
     }
 
